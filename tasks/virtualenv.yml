@@ -1,0 +1,30 @@
+- name: virtualenv check
+  stat:
+    path: "{{ openstax_wsgi_role.virtualenv_base }}"
+    follow: yes
+    get_checksum: no
+    get_md5: no
+  register: virtualenv_check
+  tags:
+    - virtualenv
+    - virtualenv-setup
+
+- name: virtualenv setup
+  become: yes
+  become_user: "{{ openstax_wsgi_role.user }}"
+  shell: "virtualenv -p {{ openstax_wsgi_role.virtualenv_python }} {{ openstax_wsgi_role.virtualenv_base }}"
+  args:
+    chdir: "{{ openstax_wsgi_role.application_dir }}"
+  when: not virtualenv_check.stat.exists
+  tags:
+    - virtualenv
+    - virtualenv-setup
+
+- name: pip install requirements.txt
+  become: yes
+  become_user: "{{ openstax_wsgi_role.user }}"
+  pip:
+    requirements: "{{ openstax_wsgi_role.requirements_dir }}"
+    extra_args: -U
+    virtualenv: "{{ openstax_wsgi_role.virtualenv_base }}"
+    virtualenv_python: "{{ openstax_wsgi_role.virtualenv_python }}"
