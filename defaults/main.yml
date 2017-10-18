@@ -1,0 +1,3 @@
+---
+# This is a group_vars specific override
+openstax_wsgi_role:

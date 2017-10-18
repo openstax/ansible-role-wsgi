@@ -1,0 +1,22 @@
+---
+- name: pip install gunicorn
+  become: yes
+  become_user: "{{ openstax_wsgi_role.user }}"
+  pip:
+    name: gunicorn
+    virtualenv: "{{ openstax_wsgi_role.virtualenv_base }}"
+    virtualenv_python: "{{ openstax_wsgi_role.virtualenv_python }}"
+  tags: pip
+
+- name: create gunicorn log directory
+  become: yes
+  file:
+    path: "{{ openstax_wsgi_role.application_dir }}/logs"
+    state: directory
+    owner: "{{ openstax_wsgi_role.user }}"
+    group: "{{ openstax_wsgi_role.group }}"
+    mode: 0755
+  tags: gunicorn-log
+
+- name: Setup systemd service and socket for gunciorn app
+  include_tasks: setup_service.yml

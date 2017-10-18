@@ -1,0 +1,27 @@
+---
+- name: install gunicorn application specific service files
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: gunicorn.service, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}.service" }
+    - { src: gunicorn.socket, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}.socket" }
+    - { src: etc/defaults/gunicorn, dest: "/etc/default/{{ openstax_wsgi_role.application_name }}" }
+    - { src: etc/tmpfiles.d/gunicorn.conf, dest: "/etc/tmpfiles.d/{{ openstax_wsgi_role.application_name }}.conf" }
+  tags:
+    - gunicorn-app-service
+
+- name: start gunicorn socket
+  become: yes
+  service:
+    name: "{{ openstax_wsgi_role.application_name }}.socket"
+    enabled: yes
+    state: started
+
+- name: start gunicorn service
+  become: yes
+  service:
+    name: "{{ openstax_wsgi_role.application_name }}.service"
+    enabled: yes
+    state: started
