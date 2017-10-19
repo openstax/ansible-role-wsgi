@@ -1,6 +1,6 @@
 [Unit]
 Description=gunicorn daemon
-Requires=gunicorn.socket
+Requires={{ openstax_wsgi_role.application_name }}.socket
 After=network.target
 
 [Service]
