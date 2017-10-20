@@ -12,8 +12,9 @@
   tags:
     - gunicorn-app-service
 
-# This task is a bit out of place here yet pyramid applications do support websockets and need to be ran in a separate process with a very similar command
-# The idea here is use different templates for the websockets that simply append -websocket to the app name similar to the task above.
+# This task is a bit out of place here but needed to run another gunicorn process for a websocket on this particular app 
+# This task will definitely need to be fixed by creating a more flexible systemd role.
+# FIXME:
 - name: install pyramid websocket configuration
   become: yes
   template:
