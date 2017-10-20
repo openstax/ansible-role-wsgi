@@ -1,6 +1,4 @@
 ---
-- debug:
-    msg: "{{ openstax_wsgi_role }}"
 - name: manage application user specific tasks
   include_tasks: app_user.yml
   tags: app-user
@@ -19,6 +17,7 @@
 - name: install gunicorn and create log directory
   include_tasks: gunicorn.yml
   when: openstax_wsgi_role.wsgi_server == 'gunicorn'
+  tags: gunicorn
 
 - name: copy the configuration over from a template
   include_tasks: copy_config.yml

@@ -5,12 +5,29 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - { src: gunicorn.service, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}.service" }
-    - { src: gunicorn.socket, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}.socket" }
+    - { src: gunicorn-app.service, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}.service" }
+    - { src: gunicorn-app.socket, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}.socket" }
     - { src: etc/defaults/gunicorn, dest: "/etc/default/{{ openstax_wsgi_role.application_name }}" }
     - { src: etc/tmpfiles.d/gunicorn.conf, dest: "/etc/tmpfiles.d/{{ openstax_wsgi_role.application_name }}.conf" }
   tags:
     - gunicorn-app-service
+
+# This task is a bit out of place here but needed to run another gunicorn process for a websocket on this particular app 
+# This task will definitely need to be fixed by creating a more flexible systemd role.
+# FIXME:
+- name: install pyramid websocket configuration
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: gunicorn-websocket.service, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}-websocket.service" }
+    - { src: gunicorn-websocket.socket, dest: "/lib/systemd/system/{{ openstax_wsgi_role.application_name }}-websocket.socket" }
+    - { src: etc/defaults/gunicorn-websocket, dest: "/etc/default/{{ openstax_wsgi_role.application_name }}-websocket" }
+    - { src: etc/tmpfiles.d/gunicorn-websocket.conf, dest: "/etc/tmpfiles.d/{{ openstax_wsgi_role.application_name }}-websocket.conf" }
+  tags:
+    - gunicorn-websocket-service
+  when: openstax_wsgi_role.pyramid_websocket_conf is defined 
 
 - name: start gunicorn socket
   become: yes

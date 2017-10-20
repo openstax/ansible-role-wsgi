@@ -9,6 +9,16 @@
     recurse: yes
   listen: fix permissions
 
+- name: reload the gunicorn application
+  become: yes
+  service: 
+    name: "{{ openstax_wsgi_role.application_name }}.service"
+    enabled: yes
+    state: restarted
+  tags: app-restart
+  listen:
+    - "restart {{ openstax_wsgi_role.application_name }}"
+
 - name: reload systemd
   become: yes
   command: systemctl daemon-reload
