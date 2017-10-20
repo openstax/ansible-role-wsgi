@@ -2,7 +2,7 @@
 Description=gunicorn socket
 
 [Socket]
-ListenStream=/tmp/gunicorn-{{ openstax_wsgi_role.application_name }}.sock
+ListenStream=/tmp/{{ openstax_wsgi_role.application_name }}-websocket.sock
 
 [Install]
 WantedBy=sockets.target
