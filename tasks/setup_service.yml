@@ -1,4 +1,12 @@
 ---
+# These tasks introduce some duplication b/c of the difficulty of repeating the same role over for the 
+# websocket configuration for hypothesis deployment. It's not the best but will get us by for now.
+
+# We will also be copying some gunicorn templates which will be in two places at the same time. That is 
+# not good it currently the thing that needs to be done to get the application deployed within the timeframe.
+
+# FIXME:
+
 - name: install gunicorn application specific service files
   become: yes
   template:
