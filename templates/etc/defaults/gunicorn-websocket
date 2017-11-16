@@ -1,6 +1,0 @@
-DAEMON_OPTS="--name {{ openstax_wsgi_role.application_name }}-websocket --paste {{ openstax_wsgi_role.pyramid_websocket_conf }}  \
-     --capture-output \
-     --pythonpath {{ openstax_wsgi_role.application_dir }} \
-     --access-logfile {{ openstax_wsgi_role.application_dir }}/logs/websocket-access.log \
-     --error-logfile {{ openstax_wsgi_role.application_dir }}/logs/websocket-error.log \
-     --bind unix:/tmp/{{ openstax_wsgi_role.application_name }}-websocket.sock"
