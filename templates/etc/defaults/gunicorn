@@ -1,6 +1,0 @@
-DAEMON_OPTS="--name {{ openstax_wsgi_role.application_name }} --paste {{ openstax_wsgi_role.pyramid_conf_location }}  \
-     --capture-output \
-     --access-logfile {{ openstax_wsgi_role.application_dir }}/logs/access.log \
-     --error-logfile {{ openstax_wsgi_role.application_dir }}/logs/error.log \
-     --bind unix:/tmp/{{ openstax_wsgi_role.application_name }}.sock"
-APP_URL=hdev.openstax.org

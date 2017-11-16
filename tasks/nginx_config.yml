@@ -1,5 +1,0 @@
----
-- name: copy over the appropriate nginx config
-  become: yes
-  template:
-    src:

@@ -17,6 +17,3 @@
     group: "{{ openstax_wsgi_role.group }}"
     mode: 0755
   tags: gunicorn-log
-
-- name: Setup systemd service and socket for gunciorn app
-  include_tasks: setup_service.yml
