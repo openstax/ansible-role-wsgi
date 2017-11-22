@@ -1,3 +1,15 @@
+- name: install virtualenv
+  become: yes
+  apt:
+    pkg: virtualenv
+    state: latest
+
+- name: install the python-dev linux headers 
+  become: yes
+  apt:
+    pkg: python-dev
+    state: latest
+
 - name: virtualenv check
   stat:
     path: "{{ openstax_wsgi_role.virtualenv_base }}"
@@ -25,6 +37,6 @@
   become_user: "{{ openstax_wsgi_role.user }}"
   pip:
     requirements: "{{ openstax_wsgi_role.requirements_dir }}"
-    extra_args: -U
+    extra_args: --use-wheel
     virtualenv: "{{ openstax_wsgi_role.virtualenv_base }}"
     virtualenv_python: "{{ openstax_wsgi_role.virtualenv_python }}"
