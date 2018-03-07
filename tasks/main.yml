@@ -2,18 +2,14 @@
 - name: manage application user specific tasks
   include_tasks: app_user.yml
   tags: app-user
-  when: 
+  when:
     - openstax_wsgi_role.user is defined
     - openstax_wsgi_role.group is defined
-
-- name: clone or pull the source application
-  include_tasks: github.yml
-  when: openstax_wsgi_role.github_repo is defined
 
 - name: create virtualenv and install dependencies
   include_tasks: virtualenv.yml
   when: openstax_wsgi_role.virtualenv_base is defined and openstax_wsgi_role.requirements_dir is defined
-    
+
 - name: install gunicorn and create log directory
   include_tasks: gunicorn.yml
   when: openstax_wsgi_role.wsgi_server == 'gunicorn'
@@ -21,4 +17,4 @@
 
 - name: copy the configuration over from a template
   include_tasks: copy_config.yml
-  when: openstax_wsgi_role.copy_config 
+  when: openstax_wsgi_role.copy_config

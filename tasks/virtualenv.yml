@@ -1,11 +1,9 @@
 - name: install virtualenv
-  become: yes
   apt:
     pkg: virtualenv
     state: latest
 
-- name: install the python-dev linux headers 
-  become: yes
+- name: install the python-dev linux headers
   apt:
     pkg: python-dev
     state: latest
@@ -22,8 +20,6 @@
     - virtualenv-setup
 
 - name: virtualenv setup
-  become: yes
-  become_user: "{{ openstax_wsgi_role.user }}"
   shell: "virtualenv -p {{ openstax_wsgi_role.virtualenv_python }} {{ openstax_wsgi_role.virtualenv_base }}"
   args:
     chdir: "{{ openstax_wsgi_role.application_dir }}"
@@ -31,12 +27,17 @@
   tags:
     - virtualenv
     - virtualenv-setup
+  notify:
+    - fix permissions
 
 - name: pip install requirements.txt
-  become: yes
-  become_user: "{{ openstax_wsgi_role.user }}"
   pip:
     requirements: "{{ openstax_wsgi_role.requirements_dir }}"
     extra_args: --use-wheel
     virtualenv: "{{ openstax_wsgi_role.virtualenv_base }}"
     virtualenv_python: "{{ openstax_wsgi_role.virtualenv_python }}"
+  notify:
+    - fix permissions
+
+# Ensure handlers are run before attempting anything else
+- meta: flush_handlers
