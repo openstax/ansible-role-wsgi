@@ -1,5 +1,4 @@
 - name: create the application user
-  become: yes
   user:
     name: "{{ openstax_wsgi_role.user }}"
     groups: "{{ openstax_wsgi_role.group }}"

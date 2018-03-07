@@ -1,6 +1,5 @@
 ---
 - name: copy over any necessary application config file
-  become: yes
   template:
     src: "{{ openstax_wsgi_role.conf_template_src }}"
     dest: "{{ openstax_wsgi_role.conf_template_dest }}"

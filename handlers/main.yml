@@ -1,17 +1,7 @@
 ---
-- name: fix permissions
-  become: yes
-  file:
-    path: "{{ application.directory }}"
-    owner: "{{ user.name }}"
-    group: "{{ user.group }}"
-    state: directory
-    recurse: yes
-  listen: fix permissions
-
 - name: reload the gunicorn application
   become: yes
-  service: 
+  service:
     name: "{{ openstax_wsgi_role.application_name }}.service"
     enabled: yes
     state: restarted

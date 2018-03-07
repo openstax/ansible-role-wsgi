@@ -1,15 +1,13 @@
 ---
 - name: pip install gunicorn
-  become: yes
-  become_user: "{{ openstax_wsgi_role.user }}"
   pip:
     name: gunicorn
     virtualenv: "{{ openstax_wsgi_role.virtualenv_base }}"
     virtualenv_python: "{{ openstax_wsgi_role.virtualenv_python }}"
+  notify: fix permissions
   tags: pip
 
 - name: create gunicorn log directory
-  become: yes
   file:
     path: "{{ openstax_wsgi_role.application_dir }}/logs"
     state: directory
